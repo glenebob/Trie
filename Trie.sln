@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trie", "Trie\Trie.csproj", "{F6A074C6-A63E-456E-BA3B-C4512936B22B}"
 EndProject
@@ -11,16 +11,20 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
+		Release-Travis|Any CPU = Release-Travis|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{F6A074C6-A63E-456E-BA3B-C4512936B22B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F6A074C6-A63E-456E-BA3B-C4512936B22B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F6A074C6-A63E-456E-BA3B-C4512936B22B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F6A074C6-A63E-456E-BA3B-C4512936B22B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6A074C6-A63E-456E-BA3B-C4512936B22B}.Release-Travis|Any CPU.ActiveCfg = Release-Travis|Any CPU
+		{F6A074C6-A63E-456E-BA3B-C4512936B22B}.Release-Travis|Any CPU.Build.0 = Release-Travis|Any CPU
 		{513E6237-288D-45DD-AD1C-C4EA5BBAFD92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{513E6237-288D-45DD-AD1C-C4EA5BBAFD92}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{513E6237-288D-45DD-AD1C-C4EA5BBAFD92}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{513E6237-288D-45DD-AD1C-C4EA5BBAFD92}.Release|Any CPU.Build.0 = Release|Any CPU
+		{513E6237-288D-45DD-AD1C-C4EA5BBAFD92}.Release-Travis|Any CPU.ActiveCfg = Release-Travis|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
