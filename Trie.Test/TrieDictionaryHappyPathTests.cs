@@ -7,65 +7,36 @@ using Trie.Util;
 namespace Trie.Test
 {
     [TestClass]
-    public class TrieDictionaryTests
+    public class TrieDictionaryHappyPathTests
     {
-        [TestMethod]
-        public void ThrowsExpectedExceptions()
-        {
-            TrieAssert.Throws<ArgumentNullException>(() => new TrieDictionary<string, object>(null));
-
-            var trieDict = new TrieDictionary<string, object>(new StringAtoZTrieKeyInfo());
-
-            TrieAssert.Throws<ArgumentNullException>(() => trieDict.Add(null, null));
-            TrieAssert.Throws<ArgumentNullException>(() => trieDict.Add(new KeyValuePair<string, object>(null, null)));
-            TrieAssert.Throws<ArgumentNullException>(() => trieDict.Remove(null));
-            TrieAssert.Throws<ArgumentNullException>(() => trieDict.Remove(new KeyValuePair<string, object>(null, null)));
-            TrieAssert.Throws<ArgumentNullException>(() => trieDict.ContainsKey(null));
-            TrieAssert.Throws<ArgumentNullException>(() => trieDict.Contains(new KeyValuePair<string, object>(null, null)));
-            TrieAssert.Throws<ArgumentNullException>(() => {  var v = trieDict[null]; });
-            TrieAssert.Throws<ArgumentNullException>(() => trieDict[null] = null);
-            TrieAssert.Throws<KeyNotFoundException>(() => { var v = trieDict[""]; });
-            TrieAssert.Throws<ArgumentNullException>(() => trieDict.GetSubTree(null));
-
-            TrieAssert.Throws<InvalidOperationException>(() => trieDict.Keys.Add(null));
-            TrieAssert.Throws<InvalidOperationException>(() => trieDict.Keys.Remove(null));
-            TrieAssert.Throws<InvalidOperationException>(() => trieDict.Keys.Clear());
-            TrieAssert.Throws<ArgumentNullException>(() => trieDict.Keys.Contains(null));
-            TrieAssert.Throws<ArgumentNullException>(() => trieDict.Keys.GetSubTree(null));
-
-            TrieAssert.Throws<InvalidOperationException>(() => trieDict.Values.Add(null));
-            TrieAssert.Throws<InvalidOperationException>(() => trieDict.Values.Remove(null));
-            TrieAssert.Throws<InvalidOperationException>(() => trieDict.Values.Clear());
-        }
-
         [TestMethod]
         public void StringInsertRemoveContainsCountMatch()
         {
-            InsertRemoveContainsCountMatch<string>(StringAtoZTrieKeyInfo.Default, () => EnumerateTestValuePairs(EnumerateTestStrings()));
+            InsertRemoveContainsCountMatch<string>(StringAtoZTrieKeyInfo.Default, EnumerateTestValuePairs(EnumerateTestStrings()));
         }
 
         [TestMethod]
         public void UInt8InsertRemoveContainsCountMatch()
         {
-            InsertRemoveContainsCountMatch<Byte>(UInt8BinaryTrieKeyInfo.Default, () => EnumerateTestValuePairs(EnumerateTestUInt8s()));
+            InsertRemoveContainsCountMatch<Byte>(UInt8BinaryTrieKeyInfo.Default, EnumerateTestValuePairs(EnumerateTestUInt8s()));
         }
 
         [TestMethod]
         public void UInt16InsertRemoveContainsCountMatch()
         {
-            InsertRemoveContainsCountMatch<UInt16>(UInt16HalfNibbleTrieKeyInfo.Default, () => EnumerateTestValuePairs(EnumerateTestUInt16s()));
+            InsertRemoveContainsCountMatch<UInt16>(UInt16HalfNibbleTrieKeyInfo.Default, EnumerateTestValuePairs(EnumerateTestUInt16s()));
         }
 
         [TestMethod]
         public void UInt32InsertRemoveContainsCountMatch()
         {
-            InsertRemoveContainsCountMatch<UInt32>(UInt32NibbleTrieKeyInfo.Default, () => EnumerateTestValuePairs(EnumerateTestUInt32s()));
+            InsertRemoveContainsCountMatch<UInt32>(UInt32NibbleTrieKeyInfo.Default, EnumerateTestValuePairs(EnumerateTestUInt32s()));
         }
 
         [TestMethod]
         public void UInt64InsertRemoveContainsCountMatch()
         {
-            InsertRemoveContainsCountMatch<UInt64>(new UInt64ByteTrieKeyInfo(), () => EnumerateTestValuePairs(EnumerateTestUInt64s()));
+            InsertRemoveContainsCountMatch<UInt64>(new UInt64ByteTrieKeyInfo(), EnumerateTestValuePairs(EnumerateTestUInt64s()));
         }
 
         [TestMethod]
@@ -170,9 +141,9 @@ namespace Trie.Test
             Assert.AreEqual(0, trieDict.GetSubTree("c").Count());
         }
 
-        private void InsertRemoveContainsCountMatch<T>(ITrieKeyInfo<T> keyInfo, Func<IEnumerable<KeyValuePair<T, T>>> enumerateTestValues)
+        private void InsertRemoveContainsCountMatch<T>(ITrieKeyInfo<T> keyInfo, IEnumerable<KeyValuePair<T, T>> testValuesEnumeration)
         {
-            var testValues = enumerateTestValues().OrderBy(p => p.Key).ToArray();
+            var testValues = testValuesEnumeration.OrderBy(p => p.Key).ToArray();
             var trieDict = new TrieDictionary<T, T>(keyInfo);
             int count;
 

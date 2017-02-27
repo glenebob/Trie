@@ -115,7 +115,7 @@ namespace Trie
         {
             if (pair.Key == null)
             {
-                throw new ArgumentNullException(nameof(pair.Key));
+                throw new ArgumentException(nameof(pair));
             }
 
             if (base.SetOrAdd(pair, this.keyInfo.KeyElementSpace, this.keyInfo.GetKeyElementSpaceIndexEnumerator(pair.Key), false))
@@ -145,6 +145,11 @@ namespace Trie
 
         public bool Remove(KeyValuePair<TKey, TValue> pair)
         {
+            if (pair.Key == null)
+            {
+                throw new ArgumentException(nameof(pair));
+            }
+
             return this.Remove(pair.Key);
         }
 
@@ -165,6 +170,11 @@ namespace Trie
 
         public bool Contains(KeyValuePair<TKey, TValue> pair)
         {
+            if (pair.Key == null)
+            {
+                throw new ArgumentException(nameof(pair));
+            }
+
             return this.ContainsKey(pair.Key);
         }
 

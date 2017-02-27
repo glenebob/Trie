@@ -49,7 +49,8 @@ namespace Trie.Util
             {
                 throw new ArgumentOutOfRangeException(nameof(skip));
             }
-            else if (skip == 0)
+
+            if (skip == 0)
             {
                 return source;
             }

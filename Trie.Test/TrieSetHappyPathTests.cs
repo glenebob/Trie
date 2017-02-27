@@ -2,54 +2,40 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Trie.Util;
 
 namespace Trie.Test
 {
     [TestClass]
-    public class TrySetTests
+    public class TrySetHappyPathTests
     {
-        [TestMethod]
-        public void ThrowsExpectedExceptions()
-        {
-            TrieAssert.Throws<ArgumentNullException>(() => new TrieSet<string>(null));
-
-            var triSet = new TrieSet<string>(new StringAtoZTrieKeyInfo());
-
-            TrieAssert.Throws<ArgumentNullException>(() => triSet.Add(null));
-            TrieAssert.Throws<ArgumentNullException>(() => triSet.Remove(null));
-            TrieAssert.Throws<ArgumentNullException>(() => triSet.Contains(null));
-            TrieAssert.Throws<ArgumentNullException>(() => triSet.GetSubTree(null));
-        }
-
         [TestMethod]
         public void StringInsertRemoveContainsCountMatch()
         {
-            InsertRemoveContainsCountMatch<string>(StringAtoZTrieKeyInfo.Default, EnumerateTestStrings);
+            InsertRemoveContainsCountMatch<string>(StringAtoZTrieKeyInfo.Default, EnumerateTestStrings());
         }
 
         [TestMethod]
         public void UInt8InsertRemoveContainsCountMatch()
         {
-            InsertRemoveContainsCountMatch<Byte>(UInt8BinaryTrieKeyInfo.Default, EnumerateTestUInt8s);
+            InsertRemoveContainsCountMatch<Byte>(UInt8BinaryTrieKeyInfo.Default, EnumerateTestUInt8s());
         }
 
         [TestMethod]
         public void UInt16InsertRemoveContainsCountMatch()
         {
-            InsertRemoveContainsCountMatch<UInt16>(UInt16HalfNibbleTrieKeyInfo.Default, EnumerateTestUInt16s);
+            InsertRemoveContainsCountMatch<UInt16>(UInt16HalfNibbleTrieKeyInfo.Default, EnumerateTestUInt16s());
         }
 
         [TestMethod]
         public void UInt32InsertRemoveContainsCountMatch()
         {
-            InsertRemoveContainsCountMatch<UInt32>(UInt32NibbleTrieKeyInfo.Default, EnumerateTestUInt32s);
+            InsertRemoveContainsCountMatch<UInt32>(UInt32NibbleTrieKeyInfo.Default, EnumerateTestUInt32s());
         }
 
         [TestMethod]
         public void UInt64InsertRemoveContainsCountMatch()
         {
-            InsertRemoveContainsCountMatch<UInt64>(new UInt64ByteTrieKeyInfo(), EnumerateTestUInt64s);
+            InsertRemoveContainsCountMatch<UInt64>(new UInt64ByteTrieKeyInfo(), EnumerateTestUInt64s());
         }
 
         [TestMethod]
@@ -128,14 +114,15 @@ namespace Trie.Test
             Assert.AreEqual(0, trieSet.GetSubTree("c").Count());
         }
 
-        private void InsertRemoveContainsCountMatch<T>(ITrieKeyInfo<T> keyInfo, Func<IEnumerable<T>> enumerateTestValues)
+        private void InsertRemoveContainsCountMatch<T>(ITrieKeyInfo<T> keyInfo, IEnumerable<T> testValues)
         {
-            var testValues = enumerateTestValues().OrderBy(k => k).ToArray();
             var trieSet = new TrieSet<T>(keyInfo);
             int count;
 
             Assert.AreEqual(0, trieSet.Count);
             Assert.AreEqual(0, trieSet.Count());
+
+            testValues = testValues.OrderBy(k => k).ToArray();
 
             foreach (var v in testValues)
             {

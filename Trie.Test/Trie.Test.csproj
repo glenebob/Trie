@@ -51,9 +51,11 @@
     <Compile Include="KeyInfo\UInt64ByteTrieKey.cs" />
     <Compile Include="KeyInfo\UInt8BinaryTrieKey.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TrieDictionaryTests.cs" />
-    <Compile Include="TrieSetTests.cs" />
-    <Compile Include="Util\Assert.cs" />
+    <Compile Include="TrieDictionaryExceptionTests.cs" />
+    <Compile Include="TrieDictionaryHappyPathTests.cs" />
+    <Compile Include="TrieSetExceptionTests.cs" />
+    <Compile Include="TrieSetHappyPathTests.cs" />
+    <Compile Include="Util\TrieAssert.cs" />
     <Compile Include="Util\EnumerableExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
