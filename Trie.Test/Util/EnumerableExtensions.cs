@@ -1,41 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Trie.Util
 {
     public static class EnumerableExtensions
     {
-        private class SkipController<T>
-        {
-            private int skip;
-            private int skipCount;
-
-            public SkipController(int skip)
-            {
-                this.skip = skip;
-            }
-
-            public bool Predicate(T o)
-            {
-                bool result = false;
-
-                if (skipCount == 0)
-                {
-                    result = true;
-                }
-
-                skipCount++;
-
-                if (skipCount > skip)
-                {
-                    skipCount = 0;
-                }
-
-                return result;
-            }
-        }
-
         /// <summary>
         /// Enumerates the items in a sequence, skipping some, beginning with the first item.
         /// </summary>
@@ -50,13 +19,19 @@ namespace Trie.Util
                 throw new ArgumentOutOfRangeException(nameof(skip));
             }
 
-            if (skip == 0)
+            int skipped = skip;
+
+            foreach (T item in source)
             {
-                return source;
-            }
-            else
-            {
-                return source.Where(new SkipController<T>(skip).Predicate);
+                if (skipped == skip)
+                {
+                    yield return item;
+                    skipped = 0;
+                }
+                else
+                {
+                    skipped++;
+                }
             }
         }
     }

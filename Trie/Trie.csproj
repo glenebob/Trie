@@ -45,6 +45,10 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DictionaryTrieNodeStorage.cs" />
+    <Compile Include="ArrayTrieNodeStorage.cs" />
+    <Compile Include="ITrieNode.cs" />
+    <Compile Include="ITrieNodeStorage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ITrieKeyInfo.cs" />
     <Compile Include="TrieDictionary.cs" />

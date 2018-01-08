@@ -5,16 +5,16 @@ using System.Linq;
 
 namespace Trie
 {
-    public class TrieDictionaryNode<TKey, TValue> : IEnumerable<KeyValuePair<TKey, TValue>>
+    public class TrieDictionaryNode<TKey, TValue> : ITrieNode, IEnumerable<KeyValuePair<TKey, TValue>>
     {
-        private TrieDictionaryNode<TKey, TValue>[] children;
+        private ITrieNodeStorage<TrieDictionaryNode<TKey, TValue>> children;
         private int childCount;
         private KeyValuePair<TKey, TValue>? keyValuePair;
 
         protected TrieDictionaryNode()
         { }
 
-        protected bool SetOrAdd(KeyValuePair<TKey, TValue> pair, int keySpace, IEnumerator<int> enumerator, bool overwrite)
+        protected bool SetOrAdd(KeyValuePair<TKey, TValue> pair, ITrieKeyInfo<TKey> keyInfo, IEnumerator<int> enumerator, bool overwrite)
         {
             TrieDictionaryNode<TKey, TValue> node = this;
             TrieDictionaryNode<TKey, TValue> child;
@@ -23,7 +23,7 @@ namespace Trie
             {
                 if (node.children == null)
                 {
-                    node.children = new TrieDictionaryNode<TKey, TValue>[keySpace];
+                    node.children = keyInfo.CreateTrieNodeStorage<TrieDictionaryNode<TKey, TValue>>();
                     child = null;
                 }
                 else

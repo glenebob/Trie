@@ -80,7 +80,7 @@ namespace Trie
 
                 TValue value;
 
-                if (!TryGetValue(this.keyInfo.GetKeyElementSpaceIndexEnumerator(key), out value))
+                if (!TryGetValue(this.keyInfo.GetTrieNodeStorageIndexEnumerator(key), out value))
                 {
                     throw new KeyNotFoundException();
                 }
@@ -94,7 +94,7 @@ namespace Trie
                     throw new ArgumentNullException(nameof(key));
                 }
 
-                if (SetOrAdd(new KeyValuePair<TKey, TValue>(key, value), this.keyInfo.KeyElementSpace, this.keyInfo.GetKeyElementSpaceIndexEnumerator(key), true))
+                if (SetOrAdd(new KeyValuePair<TKey, TValue>(key, value), this.keyInfo, this.keyInfo.GetTrieNodeStorageIndexEnumerator(key), true))
                 {
                     this.Count++;
                 }
@@ -118,7 +118,7 @@ namespace Trie
                 throw new ArgumentException(nameof(pair));
             }
 
-            if (base.SetOrAdd(pair, this.keyInfo.KeyElementSpace, this.keyInfo.GetKeyElementSpaceIndexEnumerator(pair.Key), false))
+            if (base.SetOrAdd(pair, this.keyInfo, this.keyInfo.GetTrieNodeStorageIndexEnumerator(pair.Key), false))
             {
                 Count++;
             }
@@ -131,7 +131,7 @@ namespace Trie
                 throw new ArgumentNullException(nameof(key));
             }
 
-            if (base.Remove(this.keyInfo.GetKeyElementSpaceIndexEnumerator(key)))
+            if (base.Remove(this.keyInfo.GetTrieNodeStorageIndexEnumerator(key)))
             {
                 Count--;
 
@@ -165,7 +165,7 @@ namespace Trie
                 return false;
             }
 
-            return base.Contains(this.keyInfo.GetKeyElementSpaceIndexEnumerator(key));
+            return base.Contains(this.keyInfo.GetTrieNodeStorageIndexEnumerator(key));
         }
 
         public bool Contains(KeyValuePair<TKey, TValue> pair)
@@ -191,7 +191,7 @@ namespace Trie
                 throw new ArgumentNullException(nameof(key));
             }
 
-            return base.TryGetValue(keyInfo.GetKeyElementSpaceIndexEnumerator(key), out value);
+            return base.TryGetValue(keyInfo.GetTrieNodeStorageIndexEnumerator(key), out value);
         }
 
         public void CopyTo(KeyValuePair<TKey, TValue>[] destination, int offset)
@@ -214,7 +214,7 @@ namespace Trie
                 throw new ArgumentNullException(nameof(key));
             }
 
-            return base.GetSubTree(this.keyInfo.GetKeyElementSpaceIndexEnumerator(key));
+            return base.GetSubTree(this.keyInfo.GetTrieNodeStorageIndexEnumerator(key));
         }
 
         public class ProxyCollection<T> : ICollection<T>

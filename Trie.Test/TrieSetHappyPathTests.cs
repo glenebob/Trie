@@ -1,17 +1,21 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Text;
 
 namespace Trie.Test
 {
     [TestClass]
-    public class TrySetHappyPathTests
+    public class TrieSetHappyPathTests
     {
         [TestMethod]
         public void StringInsertRemoveContainsCountMatch()
         {
-            InsertRemoveContainsCountMatch<string>(StringAtoZTrieKeyInfo.Default, EnumerateTestStrings());
+            InsertRemoveContainsCountMatch<string>(StringAtoZTrieKeyInfo.Default, EnumerateTestStrings().OrderBy(k => k));
         }
 
         [TestMethod]
@@ -35,7 +39,13 @@ namespace Trie.Test
         [TestMethod]
         public void UInt64InsertRemoveContainsCountMatch()
         {
-            InsertRemoveContainsCountMatch<UInt64>(new UInt64ByteTrieKeyInfo(), EnumerateTestUInt64s());
+            InsertRemoveContainsCountMatch<UInt64>(UInt64ByteTrieKeyInfo.Default, EnumerateTestUInt64s());
+        }
+
+        [TestMethod]
+        public void ByteArrayInsertRemoveContainsCountMatch()
+        {
+            InsertRemoveContainsCountMatch<byte[]>(ByteArrayTrieKeyInfo.Default, EnumerateTestByteArrays());
         }
 
         [TestMethod]
@@ -114,6 +124,64 @@ namespace Trie.Test
             Assert.AreEqual(0, trieSet.GetSubTree("c").Count());
         }
 
+        [TestMethod]
+        public void HashSetVsTrieSetPopulateAndSearchBenchmark()
+        {
+            using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("Trie.Test.Words.txt"))
+            {
+                var trieSet = new TrieSet<string>(StringAtoZTrieKeyInfo.Default);
+                var hashSet = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase);
+
+                using (StreamReader reader = new StreamReader(stream, Encoding.UTF8, false, 8192, true))
+                {
+                    string word;
+
+                    while ((word = reader.ReadLine()) != null)
+                    {
+                        Assert.IsTrue(trieSet.Add(word));
+                        Assert.IsTrue(hashSet.Add(word));
+                    }
+                }
+
+                stream.Seek(0, SeekOrigin.Begin);
+
+                var swTrie = Stopwatch.StartNew();
+
+                using (StreamReader reader = new StreamReader(stream, Encoding.UTF8, false, 8192, true))
+                {
+                    string word;
+
+                    while ((word = reader.ReadLine()) != null)
+                    {
+                        Assert.IsTrue(trieSet.Contains(word));
+                    }
+                }
+
+                swTrie.Stop();
+                stream.Seek(0, SeekOrigin.Begin);
+
+                var swHash = Stopwatch.StartNew();
+
+                using (StreamReader reader = new StreamReader(stream, Encoding.UTF8, false, 8192, true))
+                {
+                    string word;
+
+                    while ((word = reader.ReadLine()) != null)
+                    {
+                        Assert.IsTrue(hashSet.Contains(word));
+                    }
+                }
+
+                swHash.Stop();
+
+                using (StreamWriter writer = new StreamWriter("Benchmark.txt"))
+                {
+                    writer.WriteLine($"Trie Set: {swTrie.Elapsed}");
+                    writer.WriteLine($"Hash Set: {swHash.Elapsed}");
+                }
+            }
+        }
+
         private void InsertRemoveContainsCountMatch<T>(ITrieKeyInfo<T> keyInfo, IEnumerable<T> testValues)
         {
             var trieSet = new TrieSet<T>(keyInfo);
@@ -122,7 +190,7 @@ namespace Trie.Test
             Assert.AreEqual(0, trieSet.Count);
             Assert.AreEqual(0, trieSet.Count());
 
-            testValues = testValues.OrderBy(k => k).ToArray();
+            testValues = testValues.ToArray();
 
             foreach (var v in testValues)
             {
@@ -234,6 +302,26 @@ namespace Trie.Test
             {
                 yield return (UInt64)i;
             }
+        }
+
+        private static IEnumerable<byte[]> EnumerateTestByteArrays()
+        {
+            yield return CreateRangedByteArray(0, 0);
+            yield return CreateRangedByteArray(1, 1);
+            yield return CreateRangedByteArray(2, 1);
+            yield return CreateRangedByteArray(3, 4);
+            yield return CreateRangedByteArray(7, 4);
+            yield return CreateRangedByteArray(11, 10);
+            yield return CreateRangedByteArray(21, 10);
+            yield return CreateRangedByteArray(31, 200);
+        }
+
+        private static byte[] CreateRangedByteArray(byte start, int count)
+        {
+            return Enumerable
+                .Range(start, count)
+                .Select((i) => (byte)i)
+                .ToArray();
         }
     }
 }

@@ -30,7 +30,7 @@ namespace Trie
                 throw new ArgumentNullException(nameof(key));
             }
 
-            if (base.Add(key, this.keyInfo.KeyElementSpace, this.keyInfo.GetKeyElementSpaceIndexEnumerator(key)))
+            if (base.Add(key, this.keyInfo, this.keyInfo.GetTrieNodeStorageIndexEnumerator(key)))
             {
                 Count++;
 
@@ -49,7 +49,7 @@ namespace Trie
                 throw new ArgumentNullException(nameof(key));
             }
 
-            if (base.Remove(this.keyInfo.GetKeyElementSpaceIndexEnumerator(key)))
+            if (base.Remove(this.keyInfo.GetTrieNodeStorageIndexEnumerator(key)))
             {
                 Count--;
 
@@ -73,7 +73,7 @@ namespace Trie
                 return false;
             }
 
-            return base.Contains(this.keyInfo.GetKeyElementSpaceIndexEnumerator(key));
+            return base.Contains(this.keyInfo.GetTrieNodeStorageIndexEnumerator(key));
         }
 
         public new void Clear()
@@ -89,7 +89,7 @@ namespace Trie
                 throw new ArgumentNullException(nameof(key));
             }
 
-            return base.GetSubTree(this.keyInfo.GetKeyElementSpaceIndexEnumerator(key));
+            return base.GetSubTree(this.keyInfo.GetTrieNodeStorageIndexEnumerator(key));
         }
     }
 }

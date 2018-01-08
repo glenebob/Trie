@@ -12,7 +12,7 @@ namespace Trie.Test
         [TestMethod]
         public void StringInsertRemoveContainsCountMatch()
         {
-            InsertRemoveContainsCountMatch<string>(StringAtoZTrieKeyInfo.Default, EnumerateTestValuePairs(EnumerateTestStrings()));
+            InsertRemoveContainsCountMatch<string>(StringAtoZTrieKeyInfo.Default, EnumerateTestValuePairs(EnumerateTestStrings().OrderBy(k => k)));
         }
 
         [TestMethod]
@@ -36,7 +36,13 @@ namespace Trie.Test
         [TestMethod]
         public void UInt64InsertRemoveContainsCountMatch()
         {
-            InsertRemoveContainsCountMatch<UInt64>(new UInt64ByteTrieKeyInfo(), EnumerateTestValuePairs(EnumerateTestUInt64s()));
+            InsertRemoveContainsCountMatch<UInt64>(UInt64ByteTrieKeyInfo.Default, EnumerateTestValuePairs(EnumerateTestUInt64s()));
+        }
+
+        [TestMethod]
+        public void ByteArrayInsertRemoveContainsCountMatch()
+        {
+            InsertRemoveContainsCountMatch<byte[]>(ByteArrayTrieKeyInfo.Default, EnumerateTestValuePairs(EnumerateTestByteArrays()));
         }
 
         [TestMethod]
@@ -141,9 +147,8 @@ namespace Trie.Test
             Assert.AreEqual(0, trieDict.GetSubTree("c").Count());
         }
 
-        private void InsertRemoveContainsCountMatch<T>(ITrieKeyInfo<T> keyInfo, IEnumerable<KeyValuePair<T, T>> testValuesEnumeration)
+        private void InsertRemoveContainsCountMatch<T>(ITrieKeyInfo<T> keyInfo, IEnumerable<KeyValuePair<T, T>> testValues)
         {
-            var testValues = testValuesEnumeration.OrderBy(p => p.Key).ToArray();
             var trieDict = new TrieDictionary<T, T>(keyInfo);
             int count;
 
@@ -153,6 +158,8 @@ namespace Trie.Test
             Assert.AreEqual(0, trieDict.Count());
             Assert.AreEqual(0, trieDict.Keys.Count());
             Assert.AreEqual(0, trieDict.Values.Count());
+
+            testValues = testValues.ToArray();
 
             foreach (var v in testValues)
             {
@@ -205,7 +212,7 @@ namespace Trie.Test
 
             Assert.IsFalse(actualKeys.MoveNext());
 
-            expected = testValues.OrderBy((kvp) => kvp.Key).GetEnumerator();
+            expected = testValues.GetEnumerator();
             var actualValues = trieDict.Values.GetEnumerator();
 
             while (expected.MoveNext())
@@ -248,9 +255,9 @@ namespace Trie.Test
                 trieDict.Add(v);
             }
 
-            Assert.AreEqual(testValues.Length, trieDict.Count);
-            Assert.AreEqual(testValues.Length, trieDict.Keys.Count);
-            Assert.AreEqual(testValues.Length, trieDict.Values.Count);
+            Assert.AreEqual(testValues.Count(), trieDict.Count);
+            Assert.AreEqual(testValues.Count(), trieDict.Keys.Count);
+            Assert.AreEqual(testValues.Count(), trieDict.Values.Count);
             trieDict.Clear();
 
             foreach (var v in testValues)
@@ -267,7 +274,7 @@ namespace Trie.Test
             Assert.AreEqual(0, trieDict.Keys.Count());
             Assert.AreEqual(0, trieDict.Values.Count());
 
-            foreach (var v in testValues.TakeSkip(Math.Max(testValues.Length / 100 - 1, 0)))
+            foreach (var v in testValues.TakeSkip(Math.Max(testValues.Count() / 100 - 1, 0)))
             {
                 Assert.IsFalse(trieDict.Values.Contains(v.Value));
                 trieDict.Add(v);
@@ -277,6 +284,8 @@ namespace Trie.Test
 
         private static IEnumerable<KeyValuePair<T, T>> EnumerateTestValuePairs<T>(IEnumerable<T> enumerable)
         {
+            enumerable = enumerable.ToArray();
+
             return Enumerable.Zip(enumerable, enumerable.Reverse(), (a, b) => new KeyValuePair<T, T>(a, b));
         }
 
@@ -326,6 +335,26 @@ namespace Trie.Test
             {
                 yield return (UInt64)i;
             }
+        }
+
+        private static IEnumerable<byte[]> EnumerateTestByteArrays()
+        {
+            yield return CreateRangedByteArray(0, 0);
+            yield return CreateRangedByteArray(1, 1);
+            yield return CreateRangedByteArray(2, 1);
+            yield return CreateRangedByteArray(3, 4);
+            yield return CreateRangedByteArray(7, 4);
+            yield return CreateRangedByteArray(11, 10);
+            yield return CreateRangedByteArray(21, 10);
+            yield return CreateRangedByteArray(31, 200);
+        }
+
+        private static byte[] CreateRangedByteArray(byte start, int count)
+        {
+            return Enumerable
+                .Range(start, count)
+                .Select((i) => (byte)i)
+                .ToArray();
         }
     }
 }

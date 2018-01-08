@@ -18,126 +18,126 @@ namespace Trie.Test
         [ExpectedException(typeof(ArgumentNullException))]
         public void AddKeyValueThrowsArgumentNullException()
         {
-             new TrieDictionary<string, object>(new StringAtoZTrieKeyInfo()).Add(null, null);
+             new TrieDictionary<string, object>(StringAtoZTrieKeyInfo.Default).Add(null, null);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         public void AddKeyValuePairThrowsArgumentException()
         {
-             new TrieDictionary<string, object>(new StringAtoZTrieKeyInfo()).Add(new KeyValuePair<string, object>(null, null));
+             new TrieDictionary<string, object>(StringAtoZTrieKeyInfo.Default).Add(new KeyValuePair<string, object>(null, null));
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void RemoveKeyThrowsArgumentNullException()
         {
-             new TrieDictionary<string, object>(new StringAtoZTrieKeyInfo()).Remove(null);
+             new TrieDictionary<string, object>(StringAtoZTrieKeyInfo.Default).Remove(null);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         public void RemoveKeyValuePairThrowsArgumentException()
         {
-             new TrieDictionary<string, object>(new StringAtoZTrieKeyInfo()).Remove(new KeyValuePair<string, object>(null, null));
+             new TrieDictionary<string, object>(StringAtoZTrieKeyInfo.Default).Remove(new KeyValuePair<string, object>(null, null));
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ContainsKeyThrowsArgumentNullException()
         {
-             new TrieDictionary<string, object>(new StringAtoZTrieKeyInfo()).ContainsKey(null);
+             new TrieDictionary<string, object>(StringAtoZTrieKeyInfo.Default).ContainsKey(null);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         public void ContainsThrowsArgumentException()
         {
-             new TrieDictionary<string, object>(new StringAtoZTrieKeyInfo()).Contains(new KeyValuePair<string, object>(null, null));
+             new TrieDictionary<string, object>(StringAtoZTrieKeyInfo.Default).Contains(new KeyValuePair<string, object>(null, null));
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void GetSubTreeThrowsArgumentNullException()
         {
-             new TrieDictionary<string, object>(new StringAtoZTrieKeyInfo()).GetSubTree(null);
+             new TrieDictionary<string, object>(StringAtoZTrieKeyInfo.Default).GetSubTree(null);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void SubscriptGetThrowsArgumentNullException()
         {
-             var v = new TrieDictionary<string, object>(new StringAtoZTrieKeyInfo())[null];
+             var v = new TrieDictionary<string, object>(StringAtoZTrieKeyInfo.Default)[null];
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void SubscriptSetThrowsArgumentNullException()
         {
-             new TrieDictionary<string, object>(new StringAtoZTrieKeyInfo())[null] = null;
+             new TrieDictionary<string, object>(StringAtoZTrieKeyInfo.Default)[null] = null;
         }
 
         [TestMethod]
         [ExpectedException(typeof(KeyNotFoundException))]
         public void SubscriptGetThrowsKeyNotFoundException()
         {
-             var v = new TrieDictionary<string, object>(new StringAtoZTrieKeyInfo())[""];
+             var v = new TrieDictionary<string, object>(StringAtoZTrieKeyInfo.Default)[""];
         }
 
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
         public void KeysAddThrowsInvalidOperationException()
         {
-             new TrieDictionary<string, object>(new StringAtoZTrieKeyInfo()).Keys.Add(null);
+             new TrieDictionary<string, object>(StringAtoZTrieKeyInfo.Default).Keys.Add(null);
         }
 
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
         public void KeysRemoveThrowsInvalidOperationException()
         {
-             new TrieDictionary<string, object>(new StringAtoZTrieKeyInfo()).Keys.Remove(null);
+             new TrieDictionary<string, object>(StringAtoZTrieKeyInfo.Default).Keys.Remove(null);
         }
 
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
         public void KeysClearThrowsInvalidOperationException()
         {
-             new TrieDictionary<string, object>(new StringAtoZTrieKeyInfo()).Keys.Clear();
+             new TrieDictionary<string, object>(StringAtoZTrieKeyInfo.Default).Keys.Clear();
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void KeysContainsThrowsArgumentNullException()
         {
-             new TrieDictionary<string, object>(new StringAtoZTrieKeyInfo()).Keys.Contains(null);
+             new TrieDictionary<string, object>(StringAtoZTrieKeyInfo.Default).Keys.Contains(null);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void KeysGetSubTreeThrowsArgumentNullException()
         {
-             new TrieDictionary<string, object>(new StringAtoZTrieKeyInfo()).Keys.GetSubTree(null);
+             new TrieDictionary<string, object>(StringAtoZTrieKeyInfo.Default).Keys.GetSubTree(null);
         }
 
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
         public void ValuesAddThrowsInvalidOperationException()
         {
-             new TrieDictionary<string, object>(new StringAtoZTrieKeyInfo()).Values.Add(null);
+             new TrieDictionary<string, object>(StringAtoZTrieKeyInfo.Default).Values.Add(null);
         }
 
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
         public void ValuesRemoveThrowsInvalidOperationException()
         {
-             new TrieDictionary<string, object>(new StringAtoZTrieKeyInfo()).Values.Remove(null);
+             new TrieDictionary<string, object>(StringAtoZTrieKeyInfo.Default).Values.Remove(null);
         }
 
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
         public void ValuesClearThrowsInvalidOperationException()
         {
-             new TrieDictionary<string, object>(new StringAtoZTrieKeyInfo()).Values.Clear();
+             new TrieDictionary<string, object>(StringAtoZTrieKeyInfo.Default).Values.Clear();
         }
     }
 }

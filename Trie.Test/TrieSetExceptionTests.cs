@@ -17,28 +17,28 @@ namespace Trie.Test
         [ExpectedException(typeof(ArgumentNullException))]
         public void AddThrowsArgumentNullException()
         {
-            new TrieSet<string>(new StringAtoZTrieKeyInfo()).Add(null);
+            new TrieSet<string>(StringAtoZTrieKeyInfo.Default).Add(null);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void RemoveThrowsArgumentNullException()
         {
-            new TrieSet<string>(new StringAtoZTrieKeyInfo()).Remove(null);
+            new TrieSet<string>(StringAtoZTrieKeyInfo.Default).Remove(null);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ContainsThrowsArgumentNullException()
         {
-            new TrieSet<string>(new StringAtoZTrieKeyInfo()).Contains(null);
+            new TrieSet<string>(StringAtoZTrieKeyInfo.Default).Contains(null);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void GetSubTreeThrowsArgumentNullException()
         {
-            new TrieSet<string>(new StringAtoZTrieKeyInfo()).GetSubTree(null);
+            new TrieSet<string>(StringAtoZTrieKeyInfo.Default).GetSubTree(null);
         }
     }
 }

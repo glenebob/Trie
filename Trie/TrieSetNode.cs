@@ -4,9 +4,9 @@ using System.Linq;
 
 namespace Trie
 {
-    public class TrieSetNode<TKey> : IEnumerable<TKey>
+    public class TrieSetNode<TKey> : ITrieNode, IEnumerable<TKey>
     {
-        private TrieSetNode<TKey>[] children;
+        private ITrieNodeStorage<TrieSetNode<TKey>> children;
         private int childCount;
         private TKey key;
         private bool keyPopulated;
@@ -14,28 +14,28 @@ namespace Trie
         protected TrieSetNode()
         { }
 
-        protected bool Add(TKey key, int keySpace, IEnumerator<int> enumerator)
+        protected bool Add(TKey key, ITrieKeyInfo<TKey> keyInfo, IEnumerator<int> keyElementSpaceIndexEnumerator)
         {
             TrieSetNode<TKey> node = this;
             TrieSetNode<TKey> child;
 
-            while (enumerator.MoveNext())
+            while (keyElementSpaceIndexEnumerator.MoveNext())
             {
                 if (node.children == null)
                 {
-                    node.children = new TrieSetNode<TKey>[keySpace];
+                    node.children = keyInfo.CreateTrieNodeStorage<TrieSetNode<TKey>>();
                     child = null;
                 }
                 else
                 {
-                    child = node.children[enumerator.Current];
+                    child = node.children[keyElementSpaceIndexEnumerator.Current];
                 }
 
                 if (child == null)
                 {
                     child = new TrieSetNode<TKey>();
 
-                    node.children[enumerator.Current] = child;
+                    node.children[keyElementSpaceIndexEnumerator.Current] = child;
                     node.childCount++;
                 }
 
@@ -55,9 +55,9 @@ namespace Trie
             }
         }
 
-        protected bool Remove(IEnumerator<int> enumerator)
+        protected bool Remove(IEnumerator<int> keyElementSpaceIndexEnumerator)
         {
-            if (!enumerator.MoveNext())
+            if (!keyElementSpaceIndexEnumerator.MoveNext())
             {
                 if (this.keyPopulated)
                 {
@@ -80,7 +80,7 @@ namespace Trie
             int index;
             TrieSetNode<TKey> child;
 
-            index = enumerator.Current;
+            index = keyElementSpaceIndexEnumerator.Current;
             child = children[index];
 
             if (child == null)
@@ -90,7 +90,7 @@ namespace Trie
 
             bool removed;
 
-            removed = child.Remove(enumerator);
+            removed = child.Remove(keyElementSpaceIndexEnumerator);
 
             if (removed)
             {
@@ -109,18 +109,18 @@ namespace Trie
             return removed;
         }
 
-        private TrieSetNode<TKey> TryGetNode(IEnumerator<int> enumerator)
+        private TrieSetNode<TKey> TryGetNode(IEnumerator<int> keyElementSpaceIndexEnumerator)
         {
             TrieSetNode<TKey> node = this;
 
-            while (enumerator.MoveNext())
+            while (keyElementSpaceIndexEnumerator.MoveNext())
             {
                 if (node.children == null)
                 {
                     return null;
                 }
 
-                node = node.children[enumerator.Current];
+                node = node.children[keyElementSpaceIndexEnumerator.Current];
 
                 if (node == null)
                 {
