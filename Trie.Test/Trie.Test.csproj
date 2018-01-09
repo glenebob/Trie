@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="KeyInfo\ByteArrayTrieKeyInfo.cs" />
+    <Compile Include="KeyInfo\StringTrieKeyInfo.cs" />
     <Compile Include="KeyInfo\StringAtoZTrieKeyInfo.cs" />
     <Compile Include="KeyInfo\UInt16HalfNibbleTrieKeyInfo.cs" />
     <Compile Include="KeyInfo\UInt32NibbleTrieKeyInfo.cs" />

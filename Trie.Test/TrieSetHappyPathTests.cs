@@ -13,9 +13,15 @@ namespace Trie.Test
     public class TrieSetHappyPathTests
     {
         [TestMethod]
+        public void StringAtoZInsertRemoveContainsCountMatch()
+        {
+            InsertRemoveContainsCountMatch<string>(StringAtoZTrieKeyInfo.Default, EnumerateTestStrings().OrderBy(k => k, StringComparer.OrdinalIgnoreCase));
+        }
+
+        [TestMethod]
         public void StringInsertRemoveContainsCountMatch()
         {
-            InsertRemoveContainsCountMatch<string>(StringAtoZTrieKeyInfo.Default, EnumerateTestStrings().OrderBy(k => k));
+            InsertRemoveContainsCountMatch<string>(StringTrieKeyInfo.Default, EnumerateTestStrings().OrderBy(k => k, StringComparer.Ordinal));
         }
 
         [TestMethod]
@@ -129,7 +135,8 @@ namespace Trie.Test
         {
             using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("Trie.Test.Words.txt"))
             {
-                var trieSet = new TrieSet<string>(StringAtoZTrieKeyInfo.Default);
+                var trieAtoZSet = new TrieSet<string>(StringAtoZTrieKeyInfo.Default);
+                var trieSet = new TrieSet<string>(StringTrieKeyInfo.Default);
                 var hashSet = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase);
 
                 using (StreamReader reader = new StreamReader(stream, Encoding.UTF8, false, 8192, true))
@@ -138,11 +145,27 @@ namespace Trie.Test
 
                     while ((word = reader.ReadLine()) != null)
                     {
+                        Assert.IsTrue(trieAtoZSet.Add(word));
                         Assert.IsTrue(trieSet.Add(word));
                         Assert.IsTrue(hashSet.Add(word));
                     }
                 }
 
+                stream.Seek(0, SeekOrigin.Begin);
+
+                var swTrieAtoZ = Stopwatch.StartNew();
+
+                using (StreamReader reader = new StreamReader(stream, Encoding.UTF8, false, 8192, true))
+                {
+                    string word;
+
+                    while ((word = reader.ReadLine()) != null)
+                    {
+                        Assert.IsTrue(trieAtoZSet.Contains(word));
+                    }
+                }
+
+                swTrieAtoZ.Stop();
                 stream.Seek(0, SeekOrigin.Begin);
 
                 var swTrie = Stopwatch.StartNew();
@@ -176,7 +199,8 @@ namespace Trie.Test
 
                 using (StreamWriter writer = new StreamWriter("Benchmark.txt"))
                 {
-                    writer.WriteLine($"Trie Set: {swTrie.Elapsed}");
+                    writer.WriteLine($"Trie (A to Z, array storage) Set: {swTrieAtoZ.Elapsed}");
+                    writer.WriteLine($"Trie (arbitrary characters, dictionary storage) Set: {swTrie.Elapsed}");
                     writer.WriteLine($"Hash Set: {swHash.Elapsed}");
                 }
             }

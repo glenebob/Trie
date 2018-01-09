@@ -10,9 +10,15 @@ namespace Trie.Test
     public class TrieDictionaryHappyPathTests
     {
         [TestMethod]
+        public void StringAtoZInsertRemoveContainsCountMatch()
+        {
+            InsertRemoveContainsCountMatch<string>(StringAtoZTrieKeyInfo.Default, EnumerateTestValuePairs(EnumerateTestStrings().OrderBy(k => k, StringComparer.OrdinalIgnoreCase)));
+        }
+
+        [TestMethod]
         public void StringInsertRemoveContainsCountMatch()
         {
-            InsertRemoveContainsCountMatch<string>(StringAtoZTrieKeyInfo.Default, EnumerateTestValuePairs(EnumerateTestStrings().OrderBy(k => k)));
+            InsertRemoveContainsCountMatch<string>(StringTrieKeyInfo.Default, EnumerateTestValuePairs(EnumerateTestStrings().OrderBy(k => k, StringComparer.Ordinal)));
         }
 
         [TestMethod]
