@@ -15,13 +15,19 @@ namespace Trie.Test
         [TestMethod]
         public void StringAtoZInsertRemoveContainsCountMatch()
         {
-            InsertRemoveContainsCountMatch<string>(StringAtoZTrieKeyInfo.Default, EnumerateTestStrings().OrderBy(k => k, StringComparer.OrdinalIgnoreCase));
+            InsertRemoveContainsCountMatch<string>(StringAtoZTrieKeyInfo.Default, EnumerateTestStringsAtoZ().OrderBy(k => k, StringComparer.OrdinalIgnoreCase));
+        }
+
+        [TestMethod]
+        public void String0to9InsertRemoveContainsCountMatch()
+        {
+            InsertRemoveContainsCountMatch<string>(String0to9TrieKeyInfo.Default, EnumerateTestStrings0to9().OrderBy(k => k, StringComparer.OrdinalIgnoreCase));
         }
 
         [TestMethod]
         public void StringInsertRemoveContainsCountMatch()
         {
-            InsertRemoveContainsCountMatch<string>(StringTrieKeyInfo.Default, EnumerateTestStrings().OrderBy(k => k, StringComparer.Ordinal));
+            InsertRemoveContainsCountMatch<string>(StringTrieKeyInfo.Default, EnumerateTestStringsAtoZ().OrderBy(k => k, StringComparer.Ordinal));
         }
 
         [TestMethod]
@@ -280,7 +286,7 @@ namespace Trie.Test
             Assert.AreEqual(0, trieSet.Count());
         }
 
-        private static IEnumerable<string> EnumerateTestStrings()
+        private static IEnumerable<string> EnumerateTestStringsAtoZ()
         {
             yield return "";
             yield return "a";
@@ -294,6 +300,20 @@ namespace Trie.Test
             yield return "abcdefghijklmnopqrstuvwxyz";
             yield return "ZYXWVUTSRQPONMLKJIHGFEDCBA";
             yield return "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        }
+
+        private static IEnumerable<string> EnumerateTestStrings0to9()
+        {
+            yield return "";
+            yield return "0";
+            yield return "9";
+            yield return "1";
+            yield return "8";
+            yield return "22";
+            yield return "77";
+            yield return "0123456789";
+            yield return "9876543210";
+            yield return "012345678987654321012345678987654321012345678987654321012345678987654321012345678987654321012345678987654321012345678987654321012345678987654321012345678987654321012345678987654321";
         }
 
         private static IEnumerable<Byte> EnumerateTestUInt8s()
