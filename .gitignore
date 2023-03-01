@@ -1,5 +1,7 @@
-.git
-.vs
-TestResults
-bin
-obj
+/.vs/
+/TestResults/
+
+bin/
+obj/
+
+*.csproj.user
