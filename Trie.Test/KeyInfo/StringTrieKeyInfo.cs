@@ -18,7 +18,7 @@ namespace Trie.Test
 
         public IEnumerator<int> GetTrieNodeStorageIndexEnumerator(string key)
         {
-            if (key == null)
+            if (key is null)
             {
                 throw new ArgumentNullException(nameof(key));
             }

@@ -15,7 +15,7 @@ namespace Trie.Test
             InsertRemoveContainsCountMatch<string>(StringAtoZTrieKeyInfo.Default, EnumerateTestValuePairs(EnumerateTestStringsAtoZ().OrderBy(k => k, StringComparer.OrdinalIgnoreCase)));
         }
 
-        public void String0to9InsertRemoveContainsCountMatch()
+        public static void String0to9InsertRemoveContainsCountMatch()
         {
             InsertRemoveContainsCountMatch<string>(String0to9TrieKeyInfo.Default, EnumerateTestValuePairs(EnumerateTestStrings0to9().OrderBy(k => k, StringComparer.OrdinalIgnoreCase)));
         }
@@ -59,19 +59,20 @@ namespace Trie.Test
         [TestMethod]
         public void StringSubTreeEnumeration()
         {
-            var trieDict = new TrieDictionary<string, string>(StringAtoZTrieKeyInfo.Default);
-
-            trieDict.Add("", "");
-            trieDict.Add("aaa", "");
-            trieDict.Add("aaaa", "");
-            trieDict.Add("aaaaa", "");
-            trieDict.Add("aaaaaa", "");
-            trieDict.Add("b", "");
-            trieDict.Add("ba", "");
-            trieDict.Add("baa", "");
-            trieDict.Add("baaa", "");
-            trieDict.Add("baaaa", "");
-            trieDict.Add("baaaaa", "");
+            var trieDict = new TrieDictionary<string, string>(StringAtoZTrieKeyInfo.Default)
+            {
+                { "", "" },
+                { "aaa", "" },
+                { "aaaa", "" },
+                { "aaaaa", "" },
+                { "aaaaaa", "" },
+                { "b", "" },
+                { "ba", "" },
+                { "baa", "" },
+                { "baaa", "" },
+                { "baaaa", "" },
+                { "baaaaa", "" }
+            };
 
             Assert.AreEqual(11, trieDict.GetSubTree("").Count());
             Assert.AreEqual("", trieDict.GetSubTree("").First().Key);
@@ -158,7 +159,7 @@ namespace Trie.Test
             Assert.AreEqual(0, trieDict.GetSubTree("c").Count());
         }
 
-        private void InsertRemoveContainsCountMatch<T>(ITrieKeyInfo<T> keyInfo, IEnumerable<KeyValuePair<T, T>> testValues)
+        private static void InsertRemoveContainsCountMatch<T>(ITrieKeyInfo<T> keyInfo, IEnumerable<KeyValuePair<T, T>> testValues)
         {
             var trieDict = new TrieDictionary<T, T>(keyInfo);
             int count;
@@ -166,9 +167,6 @@ namespace Trie.Test
             Assert.AreEqual(0, trieDict.Count);
             Assert.AreEqual(0, trieDict.Keys.Count);
             Assert.AreEqual(0, trieDict.Values.Count);
-            Assert.AreEqual(0, trieDict.Count());
-            Assert.AreEqual(0, trieDict.Keys.Count());
-            Assert.AreEqual(0, trieDict.Values.Count());
 
             testValues = testValues.ToArray();
 
@@ -281,9 +279,6 @@ namespace Trie.Test
             Assert.AreEqual(0, trieDict.Count);
             Assert.AreEqual(0, trieDict.Keys.Count);
             Assert.AreEqual(0, trieDict.Values.Count);
-            Assert.AreEqual(0, trieDict.Count());
-            Assert.AreEqual(0, trieDict.Keys.Count());
-            Assert.AreEqual(0, trieDict.Values.Count());
 
             foreach (var v in testValues.TakeSkip(Math.Max(testValues.Count() / 100 - 1, 0)))
             {

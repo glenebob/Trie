@@ -15,7 +15,7 @@ namespace Trie.Util
             {
                 if (!includeDerived)
                 {
-                    if (!(e is E))
+                    if (e is not E)
                     {
                         throw new AssertFailedException(message, e);
                     }

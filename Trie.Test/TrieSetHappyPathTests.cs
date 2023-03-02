@@ -63,19 +63,20 @@ namespace Trie.Test
         [TestMethod]
         public void StringSubTreeEnumeration()
         {
-            var trieSet = new TrieSet<string>(StringAtoZTrieKeyInfo.Default);
-
-            trieSet.Add("");
-            trieSet.Add("aaa");
-            trieSet.Add("aaaa");
-            trieSet.Add("aaaaa");
-            trieSet.Add("aaaaaa");
-            trieSet.Add("b");
-            trieSet.Add("ba");
-            trieSet.Add("baa");
-            trieSet.Add("baaa");
-            trieSet.Add("baaaa");
-            trieSet.Add("baaaaa");
+            var trieSet = new TrieSet<string>(StringAtoZTrieKeyInfo.Default)
+            {
+                "",
+                "aaa",
+                "aaaa",
+                "aaaaa",
+                "aaaaaa",
+                "b",
+                "ba",
+                "baa",
+                "baaa",
+                "baaaa",
+                "baaaaa"
+            };
 
             Assert.AreEqual(11, trieSet.GetSubTree("").Count());
             Assert.AreEqual("", trieSet.GetSubTree("").First());
@@ -139,86 +140,82 @@ namespace Trie.Test
         [TestMethod]
         public void HashSetVsTrieSetPopulateAndSearchBenchmark()
         {
-            using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("Trie.Test.Words.txt"))
+            using Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("Trie.Test.Words.txt");
+            var trieAtoZSet = new TrieSet<string>(StringAtoZTrieKeyInfo.Default);
+            var trieSet = new TrieSet<string>(StringTrieKeyInfo.Default);
+            var hashSet = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase);
+
+            using (var reader = new StreamReader(stream, Encoding.UTF8, false, 8192, true))
             {
-                var trieAtoZSet = new TrieSet<string>(StringAtoZTrieKeyInfo.Default);
-                var trieSet = new TrieSet<string>(StringTrieKeyInfo.Default);
-                var hashSet = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase);
+                string word;
 
-                using (StreamReader reader = new StreamReader(stream, Encoding.UTF8, false, 8192, true))
+                while ((word = reader.ReadLine()) != null)
                 {
-                    string word;
-
-                    while ((word = reader.ReadLine()) != null)
-                    {
-                        Assert.IsTrue(trieAtoZSet.Add(word));
-                        Assert.IsTrue(trieSet.Add(word));
-                        Assert.IsTrue(hashSet.Add(word));
-                    }
-                }
-
-                stream.Seek(0, SeekOrigin.Begin);
-
-                var swTrieAtoZ = Stopwatch.StartNew();
-
-                using (StreamReader reader = new StreamReader(stream, Encoding.UTF8, false, 8192, true))
-                {
-                    string word;
-
-                    while ((word = reader.ReadLine()) != null)
-                    {
-                        Assert.IsTrue(trieAtoZSet.Contains(word));
-                    }
-                }
-
-                swTrieAtoZ.Stop();
-                stream.Seek(0, SeekOrigin.Begin);
-
-                var swTrie = Stopwatch.StartNew();
-
-                using (StreamReader reader = new StreamReader(stream, Encoding.UTF8, false, 8192, true))
-                {
-                    string word;
-
-                    while ((word = reader.ReadLine()) != null)
-                    {
-                        Assert.IsTrue(trieSet.Contains(word));
-                    }
-                }
-
-                swTrie.Stop();
-                stream.Seek(0, SeekOrigin.Begin);
-
-                var swHash = Stopwatch.StartNew();
-
-                using (StreamReader reader = new StreamReader(stream, Encoding.UTF8, false, 8192, true))
-                {
-                    string word;
-
-                    while ((word = reader.ReadLine()) != null)
-                    {
-                        Assert.IsTrue(hashSet.Contains(word));
-                    }
-                }
-
-                swHash.Stop();
-
-                using (StreamWriter writer = new StreamWriter("Benchmark.txt"))
-                {
-                    writer.WriteLine($"Trie (A to Z, array storage) Set: {swTrieAtoZ.Elapsed}");
-                    writer.WriteLine($"Trie (arbitrary characters, dictionary storage) Set: {swTrie.Elapsed}");
-                    writer.WriteLine($"Hash Set: {swHash.Elapsed}");
+                    Assert.IsTrue(trieAtoZSet.Add(word));
+                    Assert.IsTrue(trieSet.Add(word));
+                    Assert.IsTrue(hashSet.Add(word));
                 }
             }
+
+            stream.Seek(0, SeekOrigin.Begin);
+
+            var swTrieAtoZ = Stopwatch.StartNew();
+
+            using (var reader = new StreamReader(stream, Encoding.UTF8, false, 8192, true))
+            {
+                string word;
+
+                while ((word = reader.ReadLine()) != null)
+                {
+                    Assert.IsTrue(trieAtoZSet.Contains(word));
+                }
+            }
+
+            swTrieAtoZ.Stop();
+            stream.Seek(0, SeekOrigin.Begin);
+
+            var swTrie = Stopwatch.StartNew();
+
+            using (var reader = new StreamReader(stream, Encoding.UTF8, false, 8192, true))
+            {
+                string word;
+
+                while ((word = reader.ReadLine()) != null)
+                {
+                    Assert.IsTrue(trieSet.Contains(word));
+                }
+            }
+
+            swTrie.Stop();
+            stream.Seek(0, SeekOrigin.Begin);
+
+            var swHash = Stopwatch.StartNew();
+
+            using (var reader = new StreamReader(stream, Encoding.UTF8, false, 8192, true))
+            {
+                string word;
+
+                while ((word = reader.ReadLine()) != null)
+                {
+                    Assert.IsTrue(hashSet.Contains(word));
+                }
+            }
+
+            swHash.Stop();
+
+            using var writer = new StreamWriter("Benchmark.txt");
+
+            writer.WriteLine($"Trie (A to Z, array storage) Set: {swTrieAtoZ.Elapsed}");
+            writer.WriteLine($"Trie (arbitrary characters, dictionary storage) Set: {swTrie.Elapsed}");
+            writer.WriteLine($"Hash Set: {swHash.Elapsed}");
         }
 
-        private void InsertRemoveContainsCountMatch<T>(ITrieKeyInfo<T> keyInfo, IEnumerable<T> testValues)
+        private static void InsertRemoveContainsCountMatch<T>(ITrieKeyInfo<T> keyInfo, IEnumerable<T> testValues)
         {
             var trieSet = new TrieSet<T>(keyInfo);
             int count;
 
             Assert.AreEqual(0, trieSet.Count);
-            Assert.AreEqual(0, trieSet.Count());
 
             testValues = testValues.ToArray();
 
@@ -283,7 +280,6 @@ namespace Trie.Test
             }
 
             Assert.AreEqual(0, trieSet.Count);
-            Assert.AreEqual(0, trieSet.Count());
         }
 
         private static IEnumerable<string> EnumerateTestStringsAtoZ()

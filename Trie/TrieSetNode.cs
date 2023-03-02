@@ -61,7 +61,7 @@ namespace Trie
             {
                 if (this.keyPopulated)
                 {
-                    this.key = default(TKey);
+                    this.key = default;
                     this.keyPopulated = false;
 
                     return true;
@@ -135,7 +135,7 @@ namespace Trie
         {
             this.childCount = 0;
             this.children = null;
-            this.key = default(TKey);
+            this.key = default;
             this.keyPopulated = false;
         }
 

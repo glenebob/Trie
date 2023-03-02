@@ -67,7 +67,7 @@ namespace Trie.Test
         [ExpectedException(typeof(ArgumentNullException))]
         public void SubscriptGetThrowsArgumentNullException()
         {
-             var v = new TrieDictionary<string, object>(StringAtoZTrieKeyInfo.Default)[null];
+             _ = new TrieDictionary<string, object>(StringAtoZTrieKeyInfo.Default)[null];
         }
 
         [TestMethod]
@@ -81,7 +81,7 @@ namespace Trie.Test
         [ExpectedException(typeof(KeyNotFoundException))]
         public void SubscriptGetThrowsKeyNotFoundException()
         {
-             var v = new TrieDictionary<string, object>(StringAtoZTrieKeyInfo.Default)[""];
+             _ = new TrieDictionary<string, object>(StringAtoZTrieKeyInfo.Default)[""];
         }
 
         [TestMethod]

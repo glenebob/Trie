@@ -78,9 +78,7 @@ namespace Trie
                     throw new ArgumentNullException(nameof(key));
                 }
 
-                TValue value;
-
-                if (!TryGetValue(this.keyInfo.GetTrieNodeStorageIndexEnumerator(key), out value))
+                if (!TryGetValue(this.keyInfo.GetTrieNodeStorageIndexEnumerator(key), out TValue value))
                 {
                     throw new KeyNotFoundException();
                 }

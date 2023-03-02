@@ -5,7 +5,7 @@ namespace Trie
 {
     public class TrieSet<TKey> : TrieSetNode<TKey>
     {
-        private ITrieKeyInfo<TKey> keyInfo;
+        private readonly ITrieKeyInfo<TKey> keyInfo;
 
         public TrieSet(ITrieKeyInfo<TKey> keyInfo)
         {

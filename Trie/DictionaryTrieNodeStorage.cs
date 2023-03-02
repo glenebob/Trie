@@ -34,7 +34,7 @@ namespace Trie
                 } 
                 else
                 {
-                    return default(TNode);
+                    return default;
                 }
             }
 
