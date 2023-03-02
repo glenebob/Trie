@@ -12,7 +12,7 @@ namespace Trie.Test
 
         public ITrieNodeStorage<TNode> CreateTrieNodeStorage<TNode>() where TNode : ITrieNode
         {
-            return new Storage<TNode>();
+            return new ArrayTrieNodeStorage<TNode>(4);
         }
 
         public IEnumerator<int> GetTrieNodeStorageIndexEnumerator(UInt16 key)
@@ -21,56 +21,6 @@ namespace Trie.Test
             {
                 yield return (int)((key >> r) & 0b11);
             }
-        }
-
-        private class Storage<TNode> : ITrieNodeStorage<TNode>
-        {
-            private TNode value1;
-            private TNode value2;
-            private TNode value3;
-            private TNode value4;
-
-            public TNode this[int index]
-            {
-                get
-                {
-                    switch (index)
-                    {
-                        case 0: return value1;
-                        case 1: return value2;
-                        case 2: return value3;
-                        case 3: return value4;
-                        default: throw new IndexOutOfRangeException();
-                    }
-                }
-
-                set
-                {
-                    switch (index)
-                    {
-                        case 0:
-                            value1 = value;
-                            break;
-
-                        case 1:
-                            value2 = value;
-                            break;
-
-                        case 2:
-                            value3 = value;
-                            break;
-
-                        case 3:
-                            value4 = value;
-                            break;
-
-                        default:
-                            throw new IndexOutOfRangeException();
-                    }
-                }
-            }
-
-            public int Length => 4;
         }
     }
 }
