@@ -15,6 +15,11 @@ namespace Trie
 
         public DictionaryTrieNodeStorage(int size)
         {
+            if (size < 1)
+            {
+                throw new ArgumentOutOfRangeException(nameof(size));
+            }
+
             this.storage = new Dictionary<int, TNode>();
             this.size = size;
         }
@@ -23,7 +28,7 @@ namespace Trie
         {
             get
             {
-                if (index < 0 || index > Length)
+                if (index < 0 || index >= Length)
                 {
                     throw new IndexOutOfRangeException();
                 }
@@ -40,7 +45,7 @@ namespace Trie
 
             set
             {
-                if (index < 0 || index > Length)
+                if (index < 0 || index >= Length)
                 {
                     throw new IndexOutOfRangeException();
                 }

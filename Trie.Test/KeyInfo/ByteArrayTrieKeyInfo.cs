@@ -11,7 +11,7 @@ namespace Trie.Test
 
         public ITrieNodeStorage<TNode> CreateTrieNodeStorage<TNode>() where TNode : ITrieNode
         {
-            return new DictionaryTrieNodeStorage<TNode>(256);
+            return new DictionaryTrieNodeStorage<TNode>(byte.MaxValue + 1);
         }
 
         public IEnumerator<int> GetTrieNodeStorageIndexEnumerator(byte[] key)

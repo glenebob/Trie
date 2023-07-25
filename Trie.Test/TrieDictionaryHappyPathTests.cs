@@ -10,6 +10,12 @@ namespace Trie.Test
     public class TrieDictionaryHappyPathTests
     {
         [TestMethod]
+        public void StringSingleCharacterInsertRemoveContainsCountMatch()
+        {
+            InsertRemoveContainsCountMatch<string>(SingleItemTrieKeyInfo.Default, EnumerateTestValuePairs(EnumerateTestStringsSingleCharacter().OrderBy(k => k, StringComparer.OrdinalIgnoreCase)));
+        }
+
+        [TestMethod]
         public void StringAtoZInsertRemoveContainsCountMatch()
         {
             InsertRemoveContainsCountMatch<string>(StringAtoZTrieKeyInfo.Default, EnumerateTestValuePairs(EnumerateTestStringsAtoZ().OrderBy(k => k, StringComparer.OrdinalIgnoreCase)));
@@ -293,6 +299,22 @@ namespace Trie.Test
             enumerable = enumerable.ToArray();
 
             return Enumerable.Zip(enumerable, enumerable.Reverse(), (a, b) => new KeyValuePair<T, T>(a, b));
+        }
+
+        private static IEnumerable<string> EnumerateTestStringsSingleCharacter()
+        {
+            yield return "";
+            yield return "0";
+            yield return "00";
+            yield return "000";
+            yield return "0000";
+            yield return "00000";
+            yield return "000000";
+            yield return "0000000";
+            yield return "00000000";
+            yield return "000000000000000000";
+            yield return "0000000000000000000000000000000000";
+            yield return "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
         }
 
         private static IEnumerable<string> EnumerateTestStringsAtoZ()

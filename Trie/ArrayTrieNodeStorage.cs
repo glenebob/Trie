@@ -1,4 +1,6 @@
-﻿namespace Trie
+﻿using System;
+
+namespace Trie
 {
     /// <summary>
     /// Represents trie node storage which is backed by a System.Array.
@@ -9,6 +11,11 @@
 
         public ArrayTrieNodeStorage(int size)
         {
+            if (size < 1)
+            {
+                throw new ArgumentOutOfRangeException(nameof(size));
+            }
+
             this.storage = new TNode[size];
         }
 

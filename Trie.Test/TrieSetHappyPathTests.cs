@@ -13,6 +13,12 @@ namespace Trie.Test
     public class TrieSetHappyPathTests
     {
         [TestMethod]
+        public void StringSingleCharacterInsertRemoveContainsCountMatch()
+        {
+            InsertRemoveContainsCountMatch<string>(SingleItemTrieKeyInfo.Default, EnumerateTestStringsSingleCharacter().OrderBy(k => k, StringComparer.OrdinalIgnoreCase));
+        }
+
+        [TestMethod]
         public void StringAtoZInsertRemoveContainsCountMatch()
         {
             InsertRemoveContainsCountMatch<string>(StringAtoZTrieKeyInfo.Default, EnumerateTestStringsAtoZ().OrderBy(k => k, StringComparer.OrdinalIgnoreCase));
@@ -280,6 +286,22 @@ namespace Trie.Test
             }
 
             Assert.AreEqual(0, trieSet.Count);
+        }
+
+        private static IEnumerable<string> EnumerateTestStringsSingleCharacter()
+        {
+            yield return "";
+            yield return "0";
+            yield return "00";
+            yield return "000";
+            yield return "0000";
+            yield return "00000";
+            yield return "000000";
+            yield return "0000000";
+            yield return "00000000";
+            yield return "000000000000000000";
+            yield return "0000000000000000000000000000000000";
+            yield return "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
         }
 
         private static IEnumerable<string> EnumerateTestStringsAtoZ()
